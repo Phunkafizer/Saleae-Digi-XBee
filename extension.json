@@ -1,0 +1,13 @@
+{
+  "name": "Digi XBee",
+  "apiVersion": "1.0.0",
+  "author": "S. Seegel",
+  "version": "1.0.1",
+  "description": "Analyze API frames (API mode 1 & 2)",
+  "extensions": {
+    "Digi XBee": {
+      "type": "HighLevelAnalyzer",
+      "entryPoint": "HighLevelAnalyzer.Hla"
+    }
+  }
+}
