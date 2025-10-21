@@ -50,7 +50,8 @@ class Hla(HighLevelAnalyzer):
 
     result_types = {
         'frame': {
-            'format': '{{{data.frame_type}}}'
+            'format': '{{{data.frame_type}}}',
+            'payload': '{{{data.payload}}}'
         }
     }
 
@@ -75,6 +76,7 @@ class Hla(HighLevelAnalyzer):
         '''
 
         b = frame.data['data'][0]
+        payload = '-'
 
         if self.apimode_setting == "2":
             if self.apiesc:
@@ -140,9 +142,11 @@ class Hla(HighLevelAnalyzer):
 
             elif frametype == FT_RECEIVE_PACKET:
                 frmstr = f' {len(self.framedata) - 12} bytes payload, receive options 0x{self.framedata[11]:02X}'
+                payload = ''.join('{:02x} '.format(a) for a in self.framedata[12:])
 
             elif frametype == FT_TRANSMIT_REQUEST:
                 frmstr = f' {len(self.framedata) - 14} bytes payload, transmit options 0x{self.framedata[13]:02X}'
+                payload = ''.join('{:02x} '.format(a) for a in self.framedata[14:])
 
             else:
                 frmstr = ''
@@ -153,7 +157,8 @@ class Hla(HighLevelAnalyzer):
             self.state = PS_IDLE
 
             return AnalyzerFrame('frame', self.apiframe_starttime, frame.end_time, {
-                'frame_type': ftname + ', ' + frmstr
+                'frame_type': ftname + ', ' + frmstr,
+                'payload': payload
             })
 
 
