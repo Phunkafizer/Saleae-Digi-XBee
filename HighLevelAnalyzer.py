@@ -18,6 +18,8 @@ FT_LOCAL_AT_COMMAND_REQUEST = 0x08
 FT_TRANSMIT_REQUEST = 0x10
 FT_LOCAL_AT_COMMAND_RESPONSE = 0x88
 FT_MODEM_STATUS = 0x8A
+FT_EXT_TRANSMIT_STATUS = 0x8B
+FT_ROUTE_INFORMATION = 0x8D
 FT_RECEIVE_PACKET = 0x90
 
 ftnames = {
@@ -25,6 +27,8 @@ ftnames = {
     FT_TRANSMIT_REQUEST: 'Transmit request',
     FT_LOCAL_AT_COMMAND_RESPONSE: 'Local AT command response',
     FT_MODEM_STATUS: 'Modem status',
+    FT_EXT_TRANSMIT_STATUS: 'Ext. transmit status',
+    FT_ROUTE_INFORMATION: 'Route information',
     FT_RECEIVE_PACKET: 'Receive packet'
 }
 
@@ -139,6 +143,12 @@ class Hla(HighLevelAnalyzer):
 
             elif frametype == FT_MODEM_STATUS:
                 frmstr = hex(self.framedata[1])
+
+            elif frametype == FT_EXT_TRANSMIT_STATUS:
+                frmstr = f' ID {self.framedata[1]:02X}, TX retries {self.framedata[4]}, del. status {self.framedata[5]:02X}, disc. status {self.framedata[6]:02X}'
+
+            elif frametype == FT_ROUTE_INFORMATION:
+                frmstr = f''
 
             elif frametype == FT_RECEIVE_PACKET:
                 frmstr = f' {len(self.framedata) - 12} bytes payload, receive options 0x{self.framedata[11]:02X}'
